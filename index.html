@@ -3,30 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATI 테스트</title>
+<title>ATI 검사</title>
 
 <style>
-body {
-    background:#0a0a0a;
-    color:white;
-    font-family:sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-}
+body { background:#0a0a0a; color:white; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh;}
 .container { width:90%; max-width:700px; text-align:center;}
-button {
-    margin:5px;
-    padding:12px;
-    border-radius:10px;
-    background:#222;
-    color:white;
-    border:none;
-}
+button { margin:5px; padding:10px; border-radius:8px; background:#222; color:white; border:none;}
 button:hover { background:#444;}
 .progress { height:6px; background:#333; margin-bottom:20px;}
 .bar { height:6px; background:#00ffcc; width:0%;}
+.subtitle { color:#aaa; margin-bottom:10px;}
 </style>
 
 </head>
@@ -35,87 +21,130 @@ button:hover { background:#444;}
 
 <div class="container">
 <div class="progress"><div class="bar" id="bar"></div></div>
-<h2 id="question"></h2>
+
+<h2 id="axis"></h2>
+<p class="subtitle" id="desc"></p>
+
+<h3 id="question"></h3>
 <div id="answers"></div>
+
 </div>
 
 <script>
 
-// 🔥 42문항
-const questions = [
-["디자인 스케치를 하다가 다양한 분야로 사고가 확장된다","G"],
-["다른 분야 디자인 트렌드를 참고한다","G"],
-["여러 역할을 동시에 다루는 것이 편하다","G"],
-["인접 분야 아이디어를 연결한다","G"],
-["특정 전문 영역을 깊게 파고든다","S"],
-["관심 없는 분야는 깊이 보기 어렵다","S"],
-["특정 스타일이 명확하다","S"],
-["한 분야 완성도를 선호한다","S"],
+// 🔥 축별 구성 (원문 기반)
+const sections = [
 
-["한 작업을 끝까지 붙잡는다","L"],
-["디테일 작업에 오래 몰입한다","L"],
-["장기 프로젝트 집중 유지","L"],
-["방해 후 복귀 어렵다","L"],
-["여러 방향 빠르게 시도","R"],
-["짧은 스프린트에서 성과","R"],
-["같은 작업 오래 못함","R"],
-["멀티 프로젝트에서 더 잘됨","R"],
+{
+title:"1축 — 집중 대상",
+desc:"다방면파(G) vs 한우물파(S)",
+questions:[
+["디자인 스케치를 하다가 소재·엔지니어링·마케팅 등 관련 분야로 자연스럽게 사고가 확장된다.","G"],
+["자동차 외 다양한 디자인 트렌드를 참고한다.","G"],
+["여러 역할을 동시에 다루는 것이 편하다.","G"],
+["인접 분야 아이디어를 연결한다.","G"],
+["특정 전문 영역을 깊이 파고든다.","S"],
+["관심 없는 분야는 깊이 파악 어렵다.","S"],
+["명확한 디자인 철학이 있다.","S"],
+["한 영역 완성도를 선호한다.","S"]
+]
+},
 
-["수치 중심 판단","F"],
-["디테일 먼저 분석","F"],
-["데이터 기반 결론","F"],
-["무엇을 바꾸는지가 중요","F"],
-["전체 분위기 먼저 봄","C"],
-["맥락 이해 중요","C"],
-["패턴 연결 잘함","C"],
-["스토리 중심 설명","C"],
+{
+title:"2축 — 집중 시간",
+desc:"사자파(L) vs 토끼파(R)",
+questions:[
+["한 작업을 끝까지 붙잡는다.","L"],
+["디테일 작업에 오래 몰입한다.","L"],
+["장기 프로젝트 집중 유지.","L"],
+["방해 후 복귀 어려움.","L"],
+["여러 방향 빠르게 시도.","R"],
+["짧은 스프린트에서 성과.","R"],
+["같은 작업 오래 못함.","R"],
+["멀티 프로젝트에서 더 잘됨.","R"]
+]
+},
 
-["내 만족 중요","M"],
-["스스로 확신 중요","M"],
-["관심 없는 작업 몰입 어려움","M"],
-["개인 작업 몰입","M"],
-["팀 방향 중요","U"],
-["사용자 영향 중요","U"],
-["타인 기대 반영","U"],
-["브랜드 가치 중요","U"],
+{
+title:"3축 — 집중 패턴",
+desc:"팩트파(F) vs 맥락파(C)",
+questions:[
+["수치 중심 판단.","F"],
+["디테일 먼저 분석.","F"],
+["데이터 기반 결론.","F"],
+["무엇을 바꾸는지가 중요.","F"],
+["전체 분위기 먼저 본다.","C"],
+["맥락 이해 중요.","C"],
+["패턴 연결 잘함.","C"],
+["스토리 중심 설명.","C"]
+]
+},
 
-// 환경 (결과 영향 X)
-["환경 만족","E"],["도구 접근 가능","E"],["경험 자유","E"],
-["실수 허용","P"],["자율성","P"],["의견 제시 자유","P"],
-["내 선택 기반 작업","P"],["죄책감 (역문항)","P"],["환경 적합","P"],["자기 이해","P"]
+{
+title:"4축 — 집중 동기",
+desc:"소의파(M) vs 대의파(U)",
+questions:[
+["내 만족이 중요.","M"],
+["스스로 확신 중요.","M"],
+["관심 없는 작업 몰입 어려움.","M"],
+["개인 작업 몰입.","M"],
+["팀 방향 중요.","U"],
+["사용자 영향 중요.","U"],
+["타인 기대 반영.","U"],
+["브랜드 가치 중요.","U"]
+]
+}
+
 ];
 
-let index=0;
+let sectionIndex=0;
+let questionIndex=0;
+
 let scores={G:0,S:0,L:0,R:0,F:0,C:0,M:0,U:0};
 
 function render(){
-    if(index>=questions.length){ result(); return;}
-    document.getElementById("question").innerText = questions[index][0];
 
-    let html="";
-    for(let i=1;i<=5;i++){
-        html+=`<button onclick="answer(${i})">${i}</button>`;
-    }
-    document.getElementById("answers").innerHTML=html;
-    document.getElementById("bar").style.width=(index/questions.length*100)+"%";
+if(sectionIndex >= sections.length){
+    showResult();
+    return;
+}
+
+let section = sections[sectionIndex];
+
+document.getElementById("axis").innerText = section.title;
+document.getElementById("desc").innerText = section.desc;
+document.getElementById("question").innerText = section.questions[questionIndex][0];
+
+let html="";
+for(let i=1;i<=5;i++){
+    html += `<button onclick="answer(${i})">${i}</button>`;
+}
+
+document.getElementById("answers").innerHTML = html;
+
+let totalQ = sections.reduce((a,s)=>a+s.questions.length,0);
+let current = sections.slice(0,sectionIndex).reduce((a,s)=>a+s.questions.length,0)+questionIndex;
+
+document.getElementById("bar").style.width = (current/totalQ*100)+"%";
+
 }
 
 function answer(val){
-    let type = questions[index][1];
 
-    if(type==="P" && index===39){ // 역문항
-        val = 6-val;
-    }
+let type = sections[sectionIndex].questions[questionIndex][1];
+scores[type]+=val;
 
-    if(scores[type]!==undefined){
-        scores[type]+=val;
-    }
+questionIndex++;
 
-    index++;
-    render();
+if(questionIndex >= sections[sectionIndex].questions.length){
+    sectionIndex++;
+    questionIndex=0;
 }
 
-function result(){
+render();
+}
+
+function showResult(){
 
 let code="";
 code += scores.G>scores.S?"G":"S";
@@ -123,33 +152,11 @@ code += scores.L>scores.R?"L":"R";
 code += scores.F>scores.C?"F":"C";
 code += scores.M>scores.U?"M":"U";
 
-const descriptions={
-GLFM:"박학 장인형 — 폭넓은 지식 + 정밀 완성",
-GLFU:"체계적 수호자형 — 팀 안정 + 기준 유지",
-GLCM:"통찰 탐험가형 — 창의적 연결",
-GLCU:"비전 설계자형 — 전략 리더",
-
-GRFM:"민첩한 분석가형 — 빠른 데이터 판단",
-GRFU:"현장 해결사형 — 위기 대응",
-GRCM:"네트워크 기획자형 — 연결형 창의",
-GRCU:"촉매형 리더 — 조직 변화",
-
-SLFM:"장인 전문가형 — 깊이 최고",
-SLFU:"헌신적 전문가형 — 팀 기반",
-SLCM:"독자적 창조자형 — 철학 중심",
-SLCU:"사상적 리더형 — 통찰 리더",
-
-SRFM:"기민한 탐색자형 — 빠른 정보",
-SRFU:"기민한 실행자형 — 실행 중심",
-SRCM:"창업가형 — 실험형",
-SRCU:"변혁적 리더형 — 변화 주도"
-};
-
 document.querySelector(".container").innerHTML = `
 <h1>${code}</h1>
-<h2>${descriptions[code]}</h2>
-<p>AI는 도구가 아니라 협력 파트너입니다</p>
+<p>당신의 ATI 유형입니다</p>
 `;
+
 }
 
 render();
