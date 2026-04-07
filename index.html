@@ -1,1 +1,107 @@
-ati_test
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATI AI 협업 유형 테스트</title>
+<style>
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #0a0a0a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.container {
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+}
+button {
+    margin: 5px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #1e1e1e;
+    color: white;
+    cursor: pointer;
+}
+button:hover {
+    background: #333;
+}
+.progress {
+    height: 6px;
+    background: #333;
+    margin-bottom: 20px;
+}
+.bar {
+    height: 6px;
+    background: #00ffcc;
+    width: 0%;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <h2 id="question"></h2>
+    <div id="answers"></div>
+</div>
+
+<script>
+const questions = [
+{q:"다양한 분야를 연결해 생각한다", axis:"G"},
+{q:"한 분야를 깊게 파고든다", axis:"S"},
+{q:"오래 집중한다", axis:"L"},
+{q:"빠르게 전환한다", axis:"R"},
+{q:"수치와 데이터 중심으로 판단한다", axis:"F"},
+{q:"전체 맥락과 스토리 중심이다", axis:"C"},
+{q:"내 만족이 중요하다", axis:"M"},
+{q:"팀/사용자 가치가 중요하다", axis:"U"}
+];
+
+let index = 0;
+let scores = {G:0,S:0,L:0,R:0,F:0,C:0,M:0,U:0};
+
+function render(){
+    if(index >= questions.length){
+        showResult();
+        return;
+    }
+    document.getElementById("question").innerText = questions[index].q;
+    let html = "";
+    for(let i=1;i<=5;i++){
+        html += `<button onclick="answer(${i})">${i}</button>`;
+    }
+    document.getElementById("answers").innerHTML = html;
+    document.getElementById("bar").style.width = ((index/questions.length)*100)+"%";
+}
+
+function answer(val){
+    scores[questions[index].axis] += val;
+    index++;
+    render();
+}
+
+function showResult(){
+    let result = "";
+    result += scores.G > scores.S ? "G":"S";
+    result += scores.L > scores.R ? "L":"R";
+    result += scores.F > scores.C ? "F":"C";
+    result += scores.M > scores.U ? "M":"U";
+
+    document.querySelector(".container").innerHTML = `
+    <h1>${result}</h1>
+    <p>당신의 AI 협업 유형입니다</p>
+    <p>AI는 도구가 아니라 파트너입니다</p>
+    `;
+}
+
+render();
+</script>
+
+</body>
+</html>
