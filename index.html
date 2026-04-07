@@ -7,25 +7,26 @@
 
 <style>
 body {
-    background: #0a0a0a;
-    color: white;
-    font-family: sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background:#0a0a0a;
+    color:white;
+    font-family:sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
 }
-.container { width: 90%; max-width: 600px; text-align: center; }
+.container { width:90%; max-width:700px; text-align:center;}
 button {
-    margin: 5px;
-    padding: 12px;
-    border-radius: 8px;
-    background: #222;
-    color: white;
-    border: none;
+    margin:5px;
+    padding:12px;
+    border-radius:10px;
+    background:#222;
+    color:white;
+    border:none;
 }
-.progress { height: 5px; background: #333; margin-bottom: 20px;}
-.bar { height: 5px; background: #00ffcc; width: 0%;}
+button:hover { background:#444;}
+.progress { height:6px; background:#333; margin-bottom:20px;}
+.bar { height:6px; background:#00ffcc; width:0%;}
 </style>
 
 </head>
@@ -40,58 +41,115 @@ button {
 
 <script>
 
-// 🔥 42문항 (샘플 일부만, 나머지는 복붙 가능)
+// 🔥 42문항
 const questions = [
-{q:"다양한 분야를 연결해 생각한다", type:"G"},
-{q:"여러 역할을 동시에 다룬다", type:"G"},
-{q:"다른 분야 참고를 즐긴다", type:"G"},
-{q:"아이디어 연결이 빠르다", type:"G"},
+["디자인 스케치를 하다가 다양한 분야로 사고가 확장된다","G"],
+["다른 분야 디자인 트렌드를 참고한다","G"],
+["여러 역할을 동시에 다루는 것이 편하다","G"],
+["인접 분야 아이디어를 연결한다","G"],
+["특정 전문 영역을 깊게 파고든다","S"],
+["관심 없는 분야는 깊이 보기 어렵다","S"],
+["특정 스타일이 명확하다","S"],
+["한 분야 완성도를 선호한다","S"],
 
-{q:"한 분야 깊이 파고든다", type:"S"},
-{q:"특정 스타일 집착한다", type:"S"},
-{q:"관심 분야 외 어려움", type:"S"},
-{q:"완성도 집착", type:"S"},
+["한 작업을 끝까지 붙잡는다","L"],
+["디테일 작업에 오래 몰입한다","L"],
+["장기 프로젝트 집중 유지","L"],
+["방해 후 복귀 어렵다","L"],
+["여러 방향 빠르게 시도","R"],
+["짧은 스프린트에서 성과","R"],
+["같은 작업 오래 못함","R"],
+["멀티 프로젝트에서 더 잘됨","R"],
 
-// 👉 나머지 동일 패턴 추가하면 됨
+["수치 중심 판단","F"],
+["디테일 먼저 분석","F"],
+["데이터 기반 결론","F"],
+["무엇을 바꾸는지가 중요","F"],
+["전체 분위기 먼저 봄","C"],
+["맥락 이해 중요","C"],
+["패턴 연결 잘함","C"],
+["스토리 중심 설명","C"],
+
+["내 만족 중요","M"],
+["스스로 확신 중요","M"],
+["관심 없는 작업 몰입 어려움","M"],
+["개인 작업 몰입","M"],
+["팀 방향 중요","U"],
+["사용자 영향 중요","U"],
+["타인 기대 반영","U"],
+["브랜드 가치 중요","U"],
+
+// 환경 (결과 영향 X)
+["환경 만족","E"],["도구 접근 가능","E"],["경험 자유","E"],
+["실수 허용","P"],["자율성","P"],["의견 제시 자유","P"],
+["내 선택 기반 작업","P"],["죄책감 (역문항)","P"],["환경 적합","P"],["자기 이해","P"]
 ];
 
-let index = 0;
-let scores = {G:0,S:0,L:0,R:0,F:0,C:0,M:0,U:0};
+let index=0;
+let scores={G:0,S:0,L:0,R:0,F:0,C:0,M:0,U:0};
 
 function render(){
-    if(index >= questions.length){
-        result();
-        return;
-    }
-    document.getElementById("question").innerText = questions[index].q;
+    if(index>=questions.length){ result(); return;}
+    document.getElementById("question").innerText = questions[index][0];
 
     let html="";
     for(let i=1;i<=5;i++){
-        html += `<button onclick="answer(${i})">${i}</button>`;
+        html+=`<button onclick="answer(${i})">${i}</button>`;
     }
-    document.getElementById("answers").innerHTML = html;
-    document.getElementById("bar").style.width = ((index/questions.length)*100)+"%";
+    document.getElementById("answers").innerHTML=html;
+    document.getElementById("bar").style.width=(index/questions.length*100)+"%";
 }
 
 function answer(val){
-    scores[questions[index].type] += val;
+    let type = questions[index][1];
+
+    if(type==="P" && index===39){ // 역문항
+        val = 6-val;
+    }
+
+    if(scores[type]!==undefined){
+        scores[type]+=val;
+    }
+
     index++;
     render();
 }
 
 function result(){
-    let code="";
-    code += scores.G > scores.S ? "G":"S";
-    code += scores.L > scores.R ? "L":"R";
-    code += scores.F > scores.C ? "F":"C";
-    code += scores.M > scores.U ? "M":"U";
 
-    document.querySelector(".container").innerHTML = `
-    <h1>${code}</h1>
-    <p>당신의 집중 유형입니다</p>
-    <p>AI 협업 전략은 다음과 같습니다:</p>
-    <p>👉 AI는 보조, 인간은 방향 설정</p>
-    `;
+let code="";
+code += scores.G>scores.S?"G":"S";
+code += scores.L>scores.R?"L":"R";
+code += scores.F>scores.C?"F":"C";
+code += scores.M>scores.U?"M":"U";
+
+const descriptions={
+GLFM:"박학 장인형 — 폭넓은 지식 + 정밀 완성",
+GLFU:"체계적 수호자형 — 팀 안정 + 기준 유지",
+GLCM:"통찰 탐험가형 — 창의적 연결",
+GLCU:"비전 설계자형 — 전략 리더",
+
+GRFM:"민첩한 분석가형 — 빠른 데이터 판단",
+GRFU:"현장 해결사형 — 위기 대응",
+GRCM:"네트워크 기획자형 — 연결형 창의",
+GRCU:"촉매형 리더 — 조직 변화",
+
+SLFM:"장인 전문가형 — 깊이 최고",
+SLFU:"헌신적 전문가형 — 팀 기반",
+SLCM:"독자적 창조자형 — 철학 중심",
+SLCU:"사상적 리더형 — 통찰 리더",
+
+SRFM:"기민한 탐색자형 — 빠른 정보",
+SRFU:"기민한 실행자형 — 실행 중심",
+SRCM:"창업가형 — 실험형",
+SRCU:"변혁적 리더형 — 변화 주도"
+};
+
+document.querySelector(".container").innerHTML = `
+<h1>${code}</h1>
+<h2>${descriptions[code]}</h2>
+<p>AI는 도구가 아니라 협력 파트너입니다</p>
+`;
 }
 
 render();
