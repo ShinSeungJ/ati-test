@@ -16,20 +16,18 @@ body {
     align-items:center;
     height:100vh;
 }
-
 .container {
     width:90%;
     max-width:800px;
     text-align:center;
 }
-
 h1 { font-size:28px; margin-bottom:10px;}
-h2 { font-size:22px; margin-bottom:20px;}
+h2 { font-size:20px; margin-bottom:30px; line-height:1.6;}
 p { color:#aaa; }
 
 button {
-    margin:10px;
-    padding:14px 20px;
+    margin:6px;
+    padding:14px 18px;
     border-radius:12px;
     border:none;
     background:#222;
@@ -37,24 +35,16 @@ button {
     font-size:16px;
     cursor:pointer;
 }
-
 button:hover { background:#444;}
 
 .scale button {
     width:60px;
 }
 
-.axis-labels {
-    display:flex;
-    justify-content:space-between;
-    margin:10px 0;
-    color:#888;
-}
-
 .progress {
     height:6px;
     background:#333;
-    margin-bottom:20px;
+    margin-bottom:30px;
 }
 .bar {
     height:6px;
@@ -74,7 +64,7 @@ button:hover { background:#444;}
 
 <script>
 
-// 🔥 전체 데이터 (원문 그대로)
+// 🔥 완전 원문 그대로
 const sections = [
 
 {
@@ -85,10 +75,10 @@ questions:[
 ["자동차 외에도 항공기·가전·패션 등 다른 분야의 디자인 트렌드를 지속적으로 참고한다.","G"],
 ["한 프로젝트에서 스타일링·UX·브랜딩·소재 등 여러 역할을 동시에 다루는 것이 편하다.","G"],
 ["디자인 콘셉트를 발전시킬 때 인접 분야(문화·사회·기술)의 아이디어를 연결하는 편이다.","G"],
-["차체 면 처리 같은 특정 전문 영역을 깊이 파고드는 것이 가장 즐겁다.","S"],
-["관심 없는 디자인 분야는 세부까지 파악하기 어렵다.","S"],
+["차체 면 처리(서피스·라인 워크) 같은 특정 전문 영역을 깊이 파고드는 것이 가장 즐겁다.","S"],
+["관심 없는 디자인 분야(예: 인테리어 전문인데 익스테리어)는 세부까지 파악하기 어렵다.","S"],
 ["내가 집중하는 특정 스타일 또는 디자인 철학이 명확하게 있다.","S"],
-["넓은 분야보다 한 영역 완성도를 원한다.","S"]
+["넓은 분야를 두루 아는 것보다 한 영역에서 타의 추종을 불허하는 완성도를 원한다.","S"]
 ]
 },
 
@@ -96,56 +86,57 @@ questions:[
 title:"2축 — 집중 시간",
 desc:"사자파(L) vs 토끼파(R)\n얼마나 오래 집중하는가 — 길고 깊게, 짧고 빠르게",
 questions:[
-["한 스케치 또는 모델링을 시작하면 완성될 때까지 다른 작업으로 넘어가기 싫다.","L"],
-["디자인 세부를 다듬는 단계에서 몇 시간이 순식간에 지나간다.","L"],
-["장기 프로젝트에서 초기 열정을 끝까지 유지한다.","L"],
-["방해를 받으면 다시 집중 흐름으로 돌아오기 어렵다.","L"],
-["아이디어 단계에서 여러 방향을 빠르게 시도한다.","R"],
-["짧은 스프린트에서 최고의 성과를 낸다.","R"],
-["같은 작업을 오래 하면 쉽게 지루해진다.","R"],
-["여러 프로젝트를 동시에 진행할 때 더 잘된다.","R"]
+["한 스케치 또는 3D 모델링을 시작하면 완성될 때까지 다른 작업으로 넘어가기 싫다.","L"],
+["디자인 세부(프로포션·갭·반사광 등)를 정밀하게 다듬는 단계에서 몇 시간이 순식간에 지나간다.","L"],
+["장기 프로젝트(풀모델 체인지 등)에서 초기 열정을 마지막 양산 단계까지 유지하는 편이다.","L"],
+["중간에 방해를 받으면 다시 이전의 집중 흐름으로 돌아오는 데 상당한 시간이 걸린다.","L"],
+["아이디어 스케치 단계에서 하나에 머물기보다 여러 방향을 빠르게 시도하며 비교하는 편이다.","R"],
+["짧고 집중적인 디자인 스프린트(예: 24시간 해커톤, 단기 콘셉트 제안)에서 최고의 성과를 낸다.","R"],
+["같은 작업을 오래 하면 쉽게 지루해지고 새로운 접근이나 다른 프로젝트로 에너지가 끌린다.","R"],
+["여러 프로젝트를 동시에 진행할 때 오히려 아이디어가 더 잘 나온다.","R"]
 ]
 },
 
 {
 title:"3축 — 집중 패턴",
-desc:"팩트파(F) vs 맥락파(C)\n어떻게 처리하는가 — 데이터 vs 스토리",
+desc:"팩트파(F) vs 맥락파(C)\n어떻게 처리하는가 — 데이터에서 출발, 스토리에서 출발",
 questions:[
-["디자인 검토 시 수치를 먼저 확인한다.","F"],
-["레퍼런스에서 디테일을 먼저 본다.","F"],
-["데이터가 있어야 결론을 낸다.","F"],
-["무엇을 바꾸는지가 중요하다.","F"],
-["전체 실루엣과 분위기를 먼저 본다.","C"],
-["브랜드 철학과 맥락을 먼저 이해한다.","C"],
-["감성적 연결을 잘 찾는다.","C"],
-["스토리 중심으로 설명한다.","C"]
+["디자인 검토 시 치수·갭·단차 수치를 먼저 확인하고 판단하는 편이다.","F"],
+["레퍼런스 이미지를 볼 때 세부 디테일(스티칭·텍스처·조인트)을 먼저 분석한다.","F"],
+["경쟁차 벤치마킹 시 스펙 데이터와 구체적 수치가 확보되어야 결론을 내릴 수 있다.","F"],
+["디자인 수정 지시를 받을 때 변경 이유나 맥락보다 정확히 무엇을 바꾸는지가 더 중요하다.","F"],
+["차를 처음 볼 때 세부보다 전체 실루엣과 비례감, 그 차가 주는 분위기를 먼저 파악한다.","C"],
+["디자인 브리핑을 받을 때 수치보다 브랜드 철학·타깃 감성·시장 포지셔닝의 맥락을 먼저 이해해야 한다.","C"],
+["서로 다른 스타일 간의 공통 패턴이나 감성적 연결고리를 잘 찾아낸다.","C"],
+["디자인 발표 시 세부 설명보다 콘셉트 스토리와 감성적 흐름을 먼저 전달하는 편이다.","C"]
 ]
 },
 
 {
 title:"4축 — 집중 동기",
-desc:"소의파(M) vs 대의파(U)\n무엇을 위해 집중하는가",
+desc:"소의파(M) vs 대의파(U)\n무엇을 위해 집중하는가 — 내면의 만족, 팀과 사용자를 위해",
 questions:[
-["내가 만족할 때까지 다듬는다.","M"],
-["스스로 확신이 중요하다.","M"],
-["관심 없는 프로젝트는 집중 어렵다.","M"],
-["개인 작업에서 가장 몰입된다.","M"],
-["팀 방향이 명확할 때 더 집중된다.","U"],
-["사용자의 삶 변화에 동기부여 된다.","U"],
-["타인의 기대에 부응하려 노력한다.","U"],
-["브랜드 가치와 연결될 때 집중된다.","U"]
+["아무도 알아주지 않아도 내가 만족할 때까지 디자인을 다듬는다.","M"],
+["외부 평가나 시상보다 스스로 \"이 디자인은 옳다\"는 확신이 있을 때 집중력이 올라간다.","M"],
+["관심 없는 세그먼트(예: 상용차 전문인데 소형차 프로젝트)는 아무리 중요해도 집중하기 어렵다.","M"],
+["개인 스케치·포트폴리오 작업처럼 외부 요구 없이 순수하게 디자인하는 시간이 가장 몰입된다.","M"],
+["팀 전체 방향이 명확하고 공유될 때 혼자 작업할 때보다 디자인에 더 집중된다.","U"],
+["이 차가 실제로 도로 위에 달려 사용자의 삶을 바꾼다는 감각이 있을 때 더 열심히 하게 된다.","U"],
+["팀원·클라이언트의 기대에 부응하기 위해 스스로를 채찍질하는 경우가 많다.","U"],
+["브랜드 비전이나 사회적 의미(지속 가능성·접근성 등)와 연결될 때 집중력이 폭발한다.","U"]
 ]
 }
 
 ];
 
-let sectionIndex = -1;
-let questionIndex = 0;
+let sectionIndex=-1;
+let questionIndex=0;
 
 let scores={G:0,S:0,L:0,R:0,F:0,C:0,M:0,U:0};
 
 function showIntro(){
     sectionIndex++;
+
     if(sectionIndex >= sections.length){
         showResult();
         return;
@@ -156,28 +147,22 @@ function showIntro(){
     document.getElementById("app").innerHTML = `
     <h1>${s.title}</h1>
     <p>${s.desc.replace(/\n/g,"<br>")}</p>
-    <button onclick="startQuestions()">시작하기</button>
+    <button onclick="start()">시작하기</button>
     `;
 }
 
-function startQuestions(){
+function start(){
     questionIndex=0;
-    renderQuestion();
+    render();
 }
 
-function renderQuestion(){
+function render(){
 
     const s = sections[sectionIndex];
     const q = s.questions[questionIndex];
 
     document.getElementById("app").innerHTML = `
     <h2>${q[0]}</h2>
-
-    <div class="axis-labels">
-        <span>${q[1] === "G" ? "다방면파" : q[1]==="L"?"사자파":q[1]==="F"?"팩트파":"소의파"}</span>
-        <span>${q[1] === "G" ? "한우물파" : q[1]==="L"?"토끼파":q[1]==="F"?"맥락파":"대의파"}</span>
-    </div>
-
     <div class="scale">
         ${[1,2,3,4,5].map(i=>`<button onclick="answer(${i})">${i}</button>`).join("")}
     </div>
@@ -187,7 +172,6 @@ function renderQuestion(){
 }
 
 function answer(val){
-
     let type = sections[sectionIndex].questions[questionIndex][1];
     scores[type]+=val;
 
@@ -196,7 +180,7 @@ function answer(val){
     if(questionIndex >= sections[sectionIndex].questions.length){
         showIntro();
     } else {
-        renderQuestion();
+        render();
     }
 }
 
@@ -217,12 +201,10 @@ code += scores.M>scores.U?"M":"U";
 document.getElementById("app").innerHTML = `
 <h1>${code}</h1>
 <h2>당신의 ATI 유형입니다</h2>
-<p>이제 AI 협업 전략을 확인하세요</p>
 `;
 
 }
 
-// 시작
 showIntro();
 
 </script>
