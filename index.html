@@ -17,7 +17,6 @@
             margin: 0; background: var(--bg); color: var(--text-main); 
             font-family: 'Pretendard', -apple-system, sans-serif; 
             display: flex; justify-content: center; align-items: center; min-height: 100vh;
-            overflow-x: hidden;
         }
         .container { width: 90%; max-width: 600px; padding: 40px 20px; }
         
@@ -28,12 +27,12 @@
         .progress-bar { height: 2px; background: var(--accent); width: 0%; transition: width 0.4s ease; }
 
         /* Card Animation */
-        #app { transition: opacity 0.3s ease, transform 0.3s ease; }
+        #app { transition: opacity 0.3s ease, transform 0.3s ease; min-height: 400px; }
         .fade-out { opacity: 0; transform: translateY(-10px); }
 
-        h1 { font-size: 24px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.5px; }
+        h1 { font-size: 26px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.5px; }
         h2 { font-size: 20px; font-weight: 500; line-height: 1.5; margin-bottom: 30px; word-break: keep-all; }
-        p { color: var(--text-sub); line-height: 1.7; font-size: 15px; margin-bottom: 30px; }
+        p { color: var(--text-sub); line-height: 1.7; font-size: 15px; margin-bottom: 30px; white-space: pre-line; }
 
         /* Buttons */
         .btn-group { display: flex; flex-direction: column; gap: 12px; }
@@ -53,14 +52,15 @@
         }
 
         /* Result Styles */
-        .result-card { background: var(--card); padding: 30px; border-radius: 8px; border: 1px solid var(--border); }
+        .result-card { background: var(--card); padding: 30px; border-radius: 8px; border: 1px solid var(--border); margin-top: 20px;}
         .type-code { font-size: 48px; font-weight: 800; color: var(--accent); margin-bottom: 10px; }
         .type-title { font-size: 22px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
-        .env-badge { display: inline-block; padding: 4px 12px; background: #222; font-size: 12px; border-radius: 20px; margin-right: 8px; }
-        .section-title { font-size: 14px; color: var(--text-sub); margin: 25px 0 10px; text-transform: uppercase; }
-        .workflow-item { margin-bottom: 15px; padding-left: 15px; border-left: 1px solid #333; }
-        .workflow-step { font-weight: 700; font-size: 14px; display: block; margin-bottom: 4px; }
-        .workflow-prompt { font-family: monospace; font-size: 13px; color: #aaa; background: #1a1a1a; padding: 8px; display: block; margin-top: 6px; }
+        .env-badge { display: inline-block; padding: 6px 14px; background: #222; font-size: 13px; border-radius: 4px; margin-right: 8px; margin-bottom: 8px; }
+        .section-title { font-size: 13px; color: var(--text-sub); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; border-left: 2px solid var(--accent); padding-left: 10px; }
+        
+        .workflow-item { margin-bottom: 20px; padding: 15px; background: #1a1a1a; border-radius: 4px; }
+        .workflow-step { font-weight: 700; font-size: 14px; color: var(--accent); display: block; margin-bottom: 8px; }
+        .workflow-prompt { font-family: monospace; font-size: 13px; color: #aaa; border-top: 1px solid #333; padding-top: 8px; display: block; margin-top: 8px; }
     </style>
 </head>
 <body>
@@ -72,15 +72,15 @@
     </div>
     <div id="app">
         <h1>ATI × KIA</h1>
-        <p>자동차 디자이너를 위한 집중력 유형 검사<br>당신의 뇌가 디자인 현장에서 집중하는 방식을 확인하세요.</p>
+        <p>자동차 디자이너를 위한 집중력 유형 검사<br>당신의 뇌가 디자인 현장에서 집중하는 방식을 확인하고,<br>최적의 AI 협업 가이드를 받아보세요.</p>
         <button class="action-btn" onclick="startSurvey()">검사 시작하기</button>
     </div>
 </div>
 
 <script>
-// ================= 데이터 정의 (Q33-42 환경지수 추가) =================
+// ================= 데이터 정의 =================
 const sections = [
-    { title: "1축 — 집중 대상", desc: "무엇에 집중하는가 — 폭넓게 연결하는가, 깊이 파고드는가", questions: [
+    { title: "1축 — 집중 대상", desc: "무엇에 집중하는가?\n폭넓게 연결하는 '다방면파(G)' vs 깊이 파고드는 '한우물파(S)'", questions: [
         ["디자인 스케치를 하다가 소재·엔지니어링·마케팅 등 관련 분야로 사고가 확장된다.","G"],
         ["자동차 외에도 항공기·가전·패션 등 다른 분야의 디자인 트렌드를 지속적으로 참고한다.","G"],
         ["한 프로젝트에서 스타일링·UX·브랜딩·소재 등 여러 역할을 동시에 다루는 것이 편하다.","G"],
@@ -90,7 +90,7 @@ const sections = [
         ["내가 집중하는 특정 스타일 또는 디자인 철학이 명확하게 있다.","S"],
         ["넓은 분야를 두루 아는 것보다 한 영역에서 타의 추종을 불허하는 완성도를 원한다.","S"]
     ]},
-    { title: "2축 — 집중 시간", desc: "얼마나 오래 집중하는가 — 길고 깊게, 짧고 빠르게", questions: [
+    { title: "2축 — 집중 시간", desc: "얼마나 오래 집중하는가?\n길고 깊게 유지하는 '사자파(L)' vs 짧고 빠르게 전환하는 '토끼파(R)'", questions: [
         ["한 스케치 또는 3D 모델링을 시작하면 완성될 때까지 다른 작업으로 넘어가기 싫다.","L"],
         ["디자인 세부(프로포션·갭·반사광 등)를 다듬는 단계에서 몇 시간이 순식간에 지나간다.","L"],
         ["장기 프로젝트에서 초기 열정을 마지막 양산 단계까지 유지하는 편이다.","L"],
@@ -100,7 +100,7 @@ const sections = [
         ["같은 작업을 오래 하면 쉽게 지루해지고 새로운 접근이나 다른 프로젝트로 에너지가 끌린다.","R"],
         ["여러 프로젝트를 동시에 진행할 때 오히려 아이디어가 더 잘 나온다.","R"]
     ]},
-    { title: "3축 — 집중 패턴", desc: "어떻게 처리하는가 — 데이터에서 출발, 스토리에서 출발", questions: [
+    { title: "3축 — 집중 패턴", desc: "어떻게 정보를 처리하는가?\n데이터와 수치 위주의 '팩트파(F)' vs 전체 스토리와 '맥락파(C)'", questions: [
         ["디자인 검토 시 치수·갭·단차 수치를 먼저 확인하고 판단하는 편이다.","F"],
         ["레퍼런스 이미지를 볼 때 세부 디테일(스티칭·텍스처·조인트)을 먼저 분석한다.","F"],
         ["경쟁차 벤치마킹 시 스펙 데이터와 구체적 수치가 확보되어야 결론을 내릴 수 있다.","F"],
@@ -110,7 +110,7 @@ const sections = [
         ["서로 다른 스타일 간의 공통 패턴이나 감성적 연결고리를 잘 찾아낸다.","C"],
         ["디자인 발표 시 세부 설명보다 콘셉트 스토리와 감성적 흐름을 먼저 전달한다.","C"]
     ]},
-    { title: "4축 — 집중 동기", desc: "무엇을 위해 집중하는가 — 내면의 만족, 팀과 사용자를 위해", questions: [
+    { title: "4축 — 집중 동기", desc: "무엇을 위해 집중하는가?\n개인적 만족의 '소의파(M)' vs 팀과 사회적 의미의 '대의파(U)'", questions: [
         ["아무도 알아주지 않아도 내가 만족할 때까지 디자인을 다듬는다.","M"],
         ["외부 평가보다 스스로 '이 디자인은 옳다'는 확신이 있을 때 집중력이 올라간다.","M"],
         ["관심 없는 세그먼트 프로젝트는 아무리 중요해도 집중하기 어렵다.","M"],
@@ -120,7 +120,7 @@ const sections = [
         ["팀원·클라이언트의 기대에 부응하기 위해 스스로를 채찍질하는 경우가 많다.","U"],
         ["브랜드 비전이나 사회적 의미와 연결될 때 집중력이 폭발한다.","U"]
     ]},
-    { title: "환경 지수", desc: "디자이너로서 현재 환경이 나의 집중 유형 발현에 얼마나 자유로운가", questions: [
+    { title: "환경 지수", desc: "디자이너로서 현재 당신의 업무 환경은 어떠한가요?\n집중력을 발휘하기 위한 물리적·심리적 자유도를 측정합니다.", questions: [
         ["원하는 작업(스타일링·모델링 등)에 집중할 수 있는 업무 환경이 갖춰져 있다.","EF"],
         ["재료·소프트웨어 등 원하는 도구를 사용할 수 있는 경제적 여건이 된다.","EF"],
         ["성장 과정에서 다양한 디자인 경험을 자유롭게 시도해 볼 수 있었다.","EF"],
@@ -134,91 +134,105 @@ const sections = [
     ]}
 ];
 
-// ================= 결과 데이터 (AI 가이드 포함) =================
-const fullResultData = {
-    "GLFM": {
-        title: "박학 장인형", 
-        desc: "다양한 분야를 공부하면서도 세부 팩트까지 꼼꼼히 확인합니다.",
-        role: "선임 스타일리스트, 풀패키지 디자이너, 제품 총괄",
-        aiRole: "AI = 광범위한 리서치 엔진 / 디자이너 = 최종 완성도 판정자",
-        workflow: [
-            {step: "리서치", content: "경쟁차 스펙·소재 트렌드 1차 수집", prompt: "2024년 출시 프리미엄 SUV 익스테리어 트렌드 요약해줘"},
-            {step: "검증", content: "AI 초안의 수치·출처 교차확인", prompt: "위 내용 중 특정 수치의 원출처를 확인해줘"}
-        ],
-        caution: "AI 출력물을 완벽한 팩트로 오인하는 것. 반드시 2차 검증이 필요합니다.",
-        tip: "클레이 리뷰 전 기준치를 AI로 조사하되, 양산 사양은 사내 DB와 대조하세요."
-    },
-    // ... 나머지 15개 유형도 위와 같은 구조로 데이터베이스화 가능 (지면상 생략, 로직은 동일)
-    // 예시용 기본 데이터
-    "default": { title: "기아 디자이너", desc: "분석 중인 유형입니다.", role: "자동차 디자이너", aiRole: "협력 파트너", workflow: [], caution: "데이터 확인 필요", tip: "팀과 공유하세요" }
+// 16유형 데이터 (요약 버전 - 실제 문서를 바탕으로 함)
+const resultData = {
+    GLFM: ["박학 장인형", "다양한 분야를 아우르며 세부 디테일까지 정확하게 완성하는 디자이너", "선임 스타일리스트, 풀패키지 디자이너"],
+    GLFU: ["체계적 수호자형", "브랜드 일관성을 유지하며 장기 프로젝트를 완벽히 이끄는 디자이너", "시리즈 디자인 담당, 가이드라인 PM"],
+    GLCM: ["통찰 탐험가형", "깊은 사색을 통해 독창적 콘셉트와 미래 비전을 제시하는 디자이너", "비전 디자이너, 콘셉트 카 총괄"],
+    GLCU: ["비전 설계자형", "다양한 인사이트를 통합해 조직의 나아갈 방향을 제시하는 리더", "디자인 디렉터, 전략 기획 리더"],
+    GRFM: ["민첩한 분석가형", "시장 트렌드를 빠르게 분석해 세련된 감각으로 풀어내는 디자이너", "트렌드 리서처, 경쟁차 분석 전문가"],
+    GRFU: ["현장 해결사형", "위기 상황이나 마감 압박에서 빠른 실행력으로 문제를 푸는 디자이너", "PM, 크리에이티브 추진자"],
+    GRCM: ["네트워크 기획자형", "이질적인 분야를 빠르게 연결해 혁신적인 콘셉트를 만드는 디자이너", "콘셉트 디자이너, 크로스오버 기획자"],
+    GRCU: ["촉매형 리더", "빠른 상황 판단과 조율 능력으로 조직을 기민하게 움직이는 리더", "스튜디오 디렉터, 코디네이터"],
+    SLFM: ["장인 전문가형", "특정 분야에서 누구도 따라올 수 없는 압도적 완성도를 만드는 디자이너", "서피스 스페셜리스트, 클레이 모델러"],
+    SLFU: ["헌신형 전문가", "깊은 전문성으로 팀의 기반을 단단하게 지탱하는 신뢰받는 전문가", "기술 디자이너, 양산 품질 전문가"],
+    SLCM: ["독자적 창조자형", "자신만의 미학적 철학을 꾸준히 구축해가는 예술가형 디자이너", "독립 디자이너, 아트 디렉터"],
+    SLCU: ["사상적 리더형", "깊은 통찰과 철학을 바탕으로 미래 디자인의 가치를 전파하는 리더", "수석 디자이너, 디자인 멘토"],
+    SRFM: ["기민한 탐색자형", "하나의 영역을 깊이 알면서도 새로운 변화를 빠르게 포착하는 탐구자", "트렌드 스카우터, 디지털 디자이너"],
+    SRFU: ["기민한 실행자형", "전문성을 바탕으로 새로운 시도를 빠르게 프로토타입화하는 실행가", "프로토타입 디자이너, VR/AR 디자이너"],
+    SRCM: ["창업가형 디자이너", "전문 영역 내에서 끊임없이 새로운 실험을 반복하는 창의적 실험가", "스튜디오 스타트업 리더, 선행 디자인팀"],
+    SRCU: ["변혁적 리더형", "전문성을 무기로 조직의 낡은 관습을 바꾸고 변화를 주도하는 리더", "변화관리 디렉터, 팀 리더"]
 };
 
-let currentQ = 0;
-let totalQs = sections.reduce((acc, s) => acc + s.questions.length, 0);
+// AI 가이드 (AI활용가이드 문서 내용 반영)
+const aiGuides = {
+    GL: { role: "AI = 광범위한 리서치 엔진 / 디자이너 = 최종 완성도 판정자", flow: [{step:"리서치", content:"경쟁차 스펙 수집", prompt:"2024년 프리미엄 SUV 익스테리어 트렌드 요약해줘"}]},
+    GR: { role: "AI = 아이디어 스프링보드 / 디자이너 = 핵심 연결자", flow: [{step:"발상", content:"이질적 컨셉 조합", prompt:"자동차와 패션 브랜드 오프화이트의 협업 키워드 5개 뽑아줘"}]},
+    SL: { role: "AI = 기술적 보조원 / 디자이너 = 고유 미학의 주인", flow: [{step:"정교화", content:"기술 수치 확인", prompt:"휠베이스 3000mm SUV의 황금 비율 데이터 찾아줘"}]},
+    SR: { role: "AI = 빠른 프로토타이핑 도구 / 디자이너 = 실험 설계자", flow: [{step:"실험", content:"다양한 안 구상", prompt:"현재 스케치에서 에어로다이나믹을 강조한 3가지 변주 제안해줘"}]}
+};
+
+// ================= 앱 로직 =================
+let currentSecIdx = -1;
+let currentQIdx = 0;
 let scores = { G:0, S:0, L:0, R:0, F:0, C:0, M:0, U:0, EF:0, PF:0 };
 
 function startSurvey() {
     document.getElementById("progress-box").style.display = "block";
-    renderQuestion();
+    nextSection();
+}
+
+function nextSection() {
+    currentSecIdx++;
+    currentQIdx = 0;
+    if (currentSecIdx >= sections.length) {
+        showResult();
+        return;
+    }
+    renderIntro();
+}
+
+function renderIntro() {
+    const sec = sections[currentSecIdx];
+    const app = document.getElementById("app");
+    app.innerHTML = `
+        <div class="section-title">SECTION ${currentSecIdx + 1}</div>
+        <h1>${sec.title}</h1>
+        <p>${sec.desc}</p>
+        <button class="action-btn" onclick="renderQuestion()">이해했습니다</button>
+    `;
 }
 
 function renderQuestion() {
+    const sec = sections[currentSecIdx];
+    const q = sec.questions[currentQIdx];
     const app = document.getElementById("app");
-    app.classList.add("fade-out");
     
-    setTimeout(() => {
-        let qCount = 0;
-        let targetQ, targetSec;
-        
-        for (let s of sections) {
-            if (currentQ < qCount + s.questions.length) {
-                targetQ = s.questions[currentQ - qCount];
-                targetSec = s;
-                break;
-            }
-            qCount += s.questions.length;
-        }
+    // 전체 진행률 계산
+    let completedQs = 0;
+    for(let i=0; i<currentSecIdx; i++) completedQs += sections[i].questions.length;
+    completedQs += currentQIdx;
+    let totalQs = 0;
+    sections.forEach(s => totalQs += s.questions.length);
+    
+    document.getElementById("progress-txt").innerText = `Question ${completedQs + 1} / ${totalQs}`;
+    document.getElementById("bar").style.width = `${(completedQs / totalQs) * 100}%`;
 
-        if (currentQ >= totalQs) { showResult(); return; }
-
-        app.innerHTML = `
-            <div class="section-title">${targetSec.title}</div>
-            <h2>${targetQ[0]}</h2>
-            <div class="btn-group">
-                <button class="score-btn" onclick="next(5)">매우 그렇다 <span>5</span></button>
-                <button class="score-btn" onclick="next(4)">그렇다 <span>4</span></button>
-                <button class="score-btn" onclick="next(3)">보통 <span>3</span></button>
-                <button class="score-btn" onclick="next(2)">아니다 <span>2</span></button>
-                <button class="score-btn" onclick="next(1)">전혀 아니다 <span>1</span></button>
-            </div>
-        `;
-        
-        document.getElementById("progress-txt").innerText = `Question ${currentQ + 1} / ${totalQs}`;
-        document.getElementById("bar").style.width = `${(currentQ / totalQs) * 100}%`;
-        app.classList.remove("fade-out");
-    }, 300);
+    app.innerHTML = `
+        <div class="section-title">${sec.title}</div>
+        <h2>${q[0]}</h2>
+        <div class="btn-group">
+            <button class="score-btn" onclick="handleAnswer(5)">매우 그렇다 <span>5</span></button>
+            <button class="score-btn" onclick="handleAnswer(4)">그렇다 <span>4</span></button>
+            <button class="score-btn" onclick="handleAnswer(3)">보통 <span>3</span></button>
+            <button class="score-btn" onclick="handleAnswer(2)">아니다 <span>2</span></button>
+            <button class="score-btn" onclick="handleAnswer(1)">전혀 아니다 <span>1</span></button>
+        </div>
+    `;
 }
 
-function next(val) {
-    let qCount = 0;
-    let targetType;
-    for (let s of sections) {
-        if (currentQ < qCount + s.questions.length) {
-            targetType = s.questions[currentQ - qCount][1];
-            break;
-        }
-        qCount += s.questions.length;
-    }
+function handleAnswer(val) {
+    const type = sections[currentSecIdx].questions[currentQIdx][1];
+    
+    if (type === "PF_REV") scores["PF"] += (6 - val);
+    else scores[type] += val;
 
-    // 역문항 처리 (Q40)
-    if (targetType === "PF_REV") {
-        scores["PF"] += (6 - val);
+    currentQIdx++;
+    if (currentQIdx >= sections[currentSecIdx].questions.length) {
+        nextSection();
     } else {
-        scores[targetType] += val;
+        renderQuestion();
     }
-
-    currentQ++;
-    renderQuestion();
 }
 
 function showResult() {
@@ -230,48 +244,46 @@ function showResult() {
     code += scores.F >= scores.C ? "F" : "C";
     code += scores.M >= scores.U ? "M" : "U";
 
-    // 환경지수 평균 계산
-    let efAvg = (scores.EF / 3).toFixed(1);
-    let pfAvg = (scores.PF / 7).toFixed(1);
-
-    const data = fullResultData[code] || fullResultData["GLFM"]; // 예시용
+    const typeInfo = resultData[code];
+    const efAvg = (scores.EF / 3).toFixed(1);
+    const pfAvg = (scores.PF / 7).toFixed(1);
 
     document.getElementById("app").innerHTML = `
         <div class="result-card">
             <div class="type-code">${code}</div>
-            <div class="type-title">${data.title}</div>
-            <p>${data.desc}</p>
-            <div class="section-title">추천 역할</div>
-            <div style="font-size:15px; margin-bottom:20px;">${data.role}</div>
+            <div class="type-title">${typeInfo[0]}</div>
+            <p style="color:white;">${typeInfo[1]}</p>
+            <div class="section-title">추천 직무</div>
+            <p style="font-size:14px;">${typeInfo[2]}</p>
             
-            <div class="env-badge">직업 자유도 ${efAvg}</div>
-            <div class="env-badge">심리적 자유도 ${pfAvg}</div>
+            <div class="env-badge">물리적 자유도: ${efAvg} / 5.0</div>
+            <div class="env-badge">심리적 자유도: ${pfAvg} / 5.0</div>
 
-            <button class="action-btn" onclick="showAiGuide('${code}')">AI 협력 가이드 보기</button>
+            <button class="action-btn" onclick="showAiGuide('${code}')">AI 협업 가이드 보기</button>
         </div>
     `;
 }
 
 function showAiGuide(code) {
-    const data = fullResultData[code] || fullResultData["GLFM"];
+    const group = code.substring(0, 2); // GL, GR, SL, SR 중 하나
+    const guide = aiGuides[group];
+    const typeInfo = resultData[code];
+
     document.getElementById("app").innerHTML = `
         <div class="result-card">
-            <div class="section-title">AI 협력 가이드</div>
-            <h2 style="margin-bottom:10px;">${data.aiRole}</h2>
+            <div class="section-title">${code}를 위한 AI 가이드</div>
+            <h2 style="margin-bottom:10px;">${guide.role}</h2>
             
-            <div class="section-title">실전 워크플로</div>
-            ${data.workflow.map(w => `
+            <div class="section-title">추천 워크플로우</div>
+            ${guide.flow.map(f => `
                 <div class="workflow-item">
-                    <span class="workflow-step">${w.step}: ${w.content}</span>
-                    <span class="workflow-prompt">${w.prompt}</span>
+                    <span class="workflow-step">${f.step}: ${f.content}</span>
+                    <span class="workflow-prompt">"프롬프트 예시: ${f.prompt}"</span>
                 </div>
             `).join('')}
 
-            <div class="section-title">주의사항</div>
-            <p style="font-size:14px; color:#ef4444;">${data.caution}</p>
-
-            <div class="section-title">현장 팁</div>
-            <p style="font-size:14px;">${data.tip}</p>
+            <div class="section-title">유형별 강점</div>
+            <p style="font-size:14px; color:#aaa;">${typeInfo[1]}</p>
 
             <button class="action-btn" style="background:#222; color:#fff;" onclick="location.reload()">다시 테스트하기</button>
         </div>
