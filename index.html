@@ -6,13 +6,61 @@
 <title>ATI 검사</title>
 
 <style>
-body { background:#0a0a0a; color:white; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh;}
-.container { width:90%; max-width:700px; text-align:center;}
-button { margin:5px; padding:10px; border-radius:8px; background:#222; color:white; border:none;}
+body {
+    margin:0;
+    background:#0a0a0a;
+    color:white;
+    font-family:-apple-system, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container {
+    width:90%;
+    max-width:800px;
+    text-align:center;
+}
+
+h1 { font-size:28px; margin-bottom:10px;}
+h2 { font-size:22px; margin-bottom:20px;}
+p { color:#aaa; }
+
+button {
+    margin:10px;
+    padding:14px 20px;
+    border-radius:12px;
+    border:none;
+    background:#222;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
 button:hover { background:#444;}
-.progress { height:6px; background:#333; margin-bottom:20px;}
-.bar { height:6px; background:#00ffcc; width:0%;}
-.subtitle { color:#aaa; margin-bottom:10px;}
+
+.scale button {
+    width:60px;
+}
+
+.axis-labels {
+    display:flex;
+    justify-content:space-between;
+    margin:10px 0;
+    color:#888;
+}
+
+.progress {
+    height:6px;
+    background:#333;
+    margin-bottom:20px;
+}
+.bar {
+    height:6px;
+    background:#00ffcc;
+    width:0%;
+}
 </style>
 
 </head>
@@ -21,127 +69,141 @@ button:hover { background:#444;}
 
 <div class="container">
 <div class="progress"><div class="bar" id="bar"></div></div>
-
-<h2 id="axis"></h2>
-<p class="subtitle" id="desc"></p>
-
-<h3 id="question"></h3>
-<div id="answers"></div>
-
+<div id="app"></div>
 </div>
 
 <script>
 
-// 🔥 축별 구성 (원문 기반)
+// 🔥 전체 데이터 (원문 그대로)
 const sections = [
 
 {
 title:"1축 — 집중 대상",
-desc:"다방면파(G) vs 한우물파(S)",
+desc:"다방면파(G) vs 한우물파(S)\n무엇에 집중하는가 — 폭넓게 연결하는가, 깊이 파고드는가",
 questions:[
 ["디자인 스케치를 하다가 소재·엔지니어링·마케팅 등 관련 분야로 자연스럽게 사고가 확장된다.","G"],
-["자동차 외 다양한 디자인 트렌드를 참고한다.","G"],
-["여러 역할을 동시에 다루는 것이 편하다.","G"],
-["인접 분야 아이디어를 연결한다.","G"],
-["특정 전문 영역을 깊이 파고든다.","S"],
-["관심 없는 분야는 깊이 파악 어렵다.","S"],
-["명확한 디자인 철학이 있다.","S"],
-["한 영역 완성도를 선호한다.","S"]
+["자동차 외에도 항공기·가전·패션 등 다른 분야의 디자인 트렌드를 지속적으로 참고한다.","G"],
+["한 프로젝트에서 스타일링·UX·브랜딩·소재 등 여러 역할을 동시에 다루는 것이 편하다.","G"],
+["디자인 콘셉트를 발전시킬 때 인접 분야(문화·사회·기술)의 아이디어를 연결하는 편이다.","G"],
+["차체 면 처리 같은 특정 전문 영역을 깊이 파고드는 것이 가장 즐겁다.","S"],
+["관심 없는 디자인 분야는 세부까지 파악하기 어렵다.","S"],
+["내가 집중하는 특정 스타일 또는 디자인 철학이 명확하게 있다.","S"],
+["넓은 분야보다 한 영역 완성도를 원한다.","S"]
 ]
 },
 
 {
 title:"2축 — 집중 시간",
-desc:"사자파(L) vs 토끼파(R)",
+desc:"사자파(L) vs 토끼파(R)\n얼마나 오래 집중하는가 — 길고 깊게, 짧고 빠르게",
 questions:[
-["한 작업을 끝까지 붙잡는다.","L"],
-["디테일 작업에 오래 몰입한다.","L"],
-["장기 프로젝트 집중 유지.","L"],
-["방해 후 복귀 어려움.","L"],
-["여러 방향 빠르게 시도.","R"],
-["짧은 스프린트에서 성과.","R"],
-["같은 작업 오래 못함.","R"],
-["멀티 프로젝트에서 더 잘됨.","R"]
+["한 스케치 또는 모델링을 시작하면 완성될 때까지 다른 작업으로 넘어가기 싫다.","L"],
+["디자인 세부를 다듬는 단계에서 몇 시간이 순식간에 지나간다.","L"],
+["장기 프로젝트에서 초기 열정을 끝까지 유지한다.","L"],
+["방해를 받으면 다시 집중 흐름으로 돌아오기 어렵다.","L"],
+["아이디어 단계에서 여러 방향을 빠르게 시도한다.","R"],
+["짧은 스프린트에서 최고의 성과를 낸다.","R"],
+["같은 작업을 오래 하면 쉽게 지루해진다.","R"],
+["여러 프로젝트를 동시에 진행할 때 더 잘된다.","R"]
 ]
 },
 
 {
 title:"3축 — 집중 패턴",
-desc:"팩트파(F) vs 맥락파(C)",
+desc:"팩트파(F) vs 맥락파(C)\n어떻게 처리하는가 — 데이터 vs 스토리",
 questions:[
-["수치 중심 판단.","F"],
-["디테일 먼저 분석.","F"],
-["데이터 기반 결론.","F"],
-["무엇을 바꾸는지가 중요.","F"],
-["전체 분위기 먼저 본다.","C"],
-["맥락 이해 중요.","C"],
-["패턴 연결 잘함.","C"],
-["스토리 중심 설명.","C"]
+["디자인 검토 시 수치를 먼저 확인한다.","F"],
+["레퍼런스에서 디테일을 먼저 본다.","F"],
+["데이터가 있어야 결론을 낸다.","F"],
+["무엇을 바꾸는지가 중요하다.","F"],
+["전체 실루엣과 분위기를 먼저 본다.","C"],
+["브랜드 철학과 맥락을 먼저 이해한다.","C"],
+["감성적 연결을 잘 찾는다.","C"],
+["스토리 중심으로 설명한다.","C"]
 ]
 },
 
 {
 title:"4축 — 집중 동기",
-desc:"소의파(M) vs 대의파(U)",
+desc:"소의파(M) vs 대의파(U)\n무엇을 위해 집중하는가",
 questions:[
-["내 만족이 중요.","M"],
-["스스로 확신 중요.","M"],
-["관심 없는 작업 몰입 어려움.","M"],
-["개인 작업 몰입.","M"],
-["팀 방향 중요.","U"],
-["사용자 영향 중요.","U"],
-["타인 기대 반영.","U"],
-["브랜드 가치 중요.","U"]
+["내가 만족할 때까지 다듬는다.","M"],
+["스스로 확신이 중요하다.","M"],
+["관심 없는 프로젝트는 집중 어렵다.","M"],
+["개인 작업에서 가장 몰입된다.","M"],
+["팀 방향이 명확할 때 더 집중된다.","U"],
+["사용자의 삶 변화에 동기부여 된다.","U"],
+["타인의 기대에 부응하려 노력한다.","U"],
+["브랜드 가치와 연결될 때 집중된다.","U"]
 ]
 }
 
 ];
 
-let sectionIndex=0;
-let questionIndex=0;
+let sectionIndex = -1;
+let questionIndex = 0;
 
 let scores={G:0,S:0,L:0,R:0,F:0,C:0,M:0,U:0};
 
-function render(){
+function showIntro(){
+    sectionIndex++;
+    if(sectionIndex >= sections.length){
+        showResult();
+        return;
+    }
 
-if(sectionIndex >= sections.length){
-    showResult();
-    return;
+    const s = sections[sectionIndex];
+
+    document.getElementById("app").innerHTML = `
+    <h1>${s.title}</h1>
+    <p>${s.desc.replace(/\n/g,"<br>")}</p>
+    <button onclick="startQuestions()">시작하기</button>
+    `;
 }
 
-let section = sections[sectionIndex];
-
-document.getElementById("axis").innerText = section.title;
-document.getElementById("desc").innerText = section.desc;
-document.getElementById("question").innerText = section.questions[questionIndex][0];
-
-let html="";
-for(let i=1;i<=5;i++){
-    html += `<button onclick="answer(${i})">${i}</button>`;
+function startQuestions(){
+    questionIndex=0;
+    renderQuestion();
 }
 
-document.getElementById("answers").innerHTML = html;
+function renderQuestion(){
 
-let totalQ = sections.reduce((a,s)=>a+s.questions.length,0);
-let current = sections.slice(0,sectionIndex).reduce((a,s)=>a+s.questions.length,0)+questionIndex;
+    const s = sections[sectionIndex];
+    const q = s.questions[questionIndex];
 
-document.getElementById("bar").style.width = (current/totalQ*100)+"%";
+    document.getElementById("app").innerHTML = `
+    <h2>${q[0]}</h2>
 
+    <div class="axis-labels">
+        <span>${q[1] === "G" ? "다방면파" : q[1]==="L"?"사자파":q[1]==="F"?"팩트파":"소의파"}</span>
+        <span>${q[1] === "G" ? "한우물파" : q[1]==="L"?"토끼파":q[1]==="F"?"맥락파":"대의파"}</span>
+    </div>
+
+    <div class="scale">
+        ${[1,2,3,4,5].map(i=>`<button onclick="answer(${i})">${i}</button>`).join("")}
+    </div>
+    `;
+
+    updateBar();
 }
 
 function answer(val){
 
-let type = sections[sectionIndex].questions[questionIndex][1];
-scores[type]+=val;
+    let type = sections[sectionIndex].questions[questionIndex][1];
+    scores[type]+=val;
 
-questionIndex++;
+    questionIndex++;
 
-if(questionIndex >= sections[sectionIndex].questions.length){
-    sectionIndex++;
-    questionIndex=0;
+    if(questionIndex >= sections[sectionIndex].questions.length){
+        showIntro();
+    } else {
+        renderQuestion();
+    }
 }
 
-render();
+function updateBar(){
+    let total = sections.reduce((a,s)=>a+s.questions.length,0);
+    let done = sections.slice(0,sectionIndex).reduce((a,s)=>a+s.questions.length,0)+questionIndex;
+    document.getElementById("bar").style.width = (done/total*100)+"%";
 }
 
 function showResult(){
@@ -152,14 +214,16 @@ code += scores.L>scores.R?"L":"R";
 code += scores.F>scores.C?"F":"C";
 code += scores.M>scores.U?"M":"U";
 
-document.querySelector(".container").innerHTML = `
+document.getElementById("app").innerHTML = `
 <h1>${code}</h1>
-<p>당신의 ATI 유형입니다</p>
+<h2>당신의 ATI 유형입니다</h2>
+<p>이제 AI 협업 전략을 확인하세요</p>
 `;
 
 }
 
-render();
+// 시작
+showIntro();
 
 </script>
 
